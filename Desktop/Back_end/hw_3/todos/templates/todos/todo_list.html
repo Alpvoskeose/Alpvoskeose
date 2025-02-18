@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Todo List</h1>
+        <ul class="list-group">
+            {% for todo in todos %}
+                <li class="list-group-item">
+                    <h5>{{ todo.title }}</h5>
+                    <p>{{ todo.description }}</p>
+                    <p>Due date: {{ todo.due_date }}</p>
+                    <p>Status: {{ todo.status }}</p>
+                    <a href="{% url 'todo_delete' todo.id %}" class="btn btn-danger">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
