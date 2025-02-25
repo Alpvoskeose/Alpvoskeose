@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Threads</h1>
+<ul>
+    {% for thread in threads %}
+    <li><a href="{% url 'thread_detail' id=thread.id %}">{{ thread.name }}</a></li>
+    {% endfor %}
+</ul>
+
+<h3>Create a new thread</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Create Thread</button>
+</form>
+{% endblock %}
