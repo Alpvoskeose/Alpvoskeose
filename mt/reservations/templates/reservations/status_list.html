@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Manage Statuses</h2>
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Status</button>
+    </form>
+    <ul class="list-group">
+        {% for status in statuses %}
+        <li class="list-group-item">{{ status.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

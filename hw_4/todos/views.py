@@ -55,3 +55,4 @@ def edit_todo(request, pk):
     else:
         form = TodoForm(instance=todo)
     return render(request, 'todos/edit_todo.html', {'form': form})
+
