@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список заметок</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1>Заметки</h1>
+    <a href="{% url 'note_create' %}" class="btn btn-primary mb-3">Добавить заметку</a>
+    <ul class="list-group">
+        {% for note in notes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ note.title }}</strong> <br>
+                    {{ note.content }}
+                </div>
+                <div>
+                    <a href="{% url 'note_update' note.pk %}" class="btn btn-sm btn-warning">Редактировать</a>
+                    <a href="{% url 'note_delete' note.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
