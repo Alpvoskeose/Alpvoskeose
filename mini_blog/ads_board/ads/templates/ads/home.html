@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Доска объявлений</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> <!-- Для иконок -->
+    <style>
+        body {
+            background-color: #F9F4E8;  /* Мягкий кремовый фон */
+            color: #4E4B3B;  /* Темно-коричневый для текста */
+        }
+
+        .card {
+            transition: transform 0.3s ease;
+            border-radius: 10px;  /* Округлые углы для карточек */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            background-color: #FFEDD5;  /* Теплый персиковый фон */
+        }
+
+        .card-footer {
+            background-color: #FFDBA9;  /* Легкий оранжевый оттенок */
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            background-color: #FFF0E1;  /* Теплый светлый фон для модального окна */
+        }
+
+        .modal-content:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-success {
+            background-color: #F79C42;  /* Теплый оранжевый */
+            border-color: #F79C42;
+        }
+
+        .btn-success:hover {
+            background-color: #E87C2B;  /* Темно-оранжевый */
+            border-color: #D77119;
+        }
+
+        .btn-primary {
+            background-color: #FF9F1C;  /* Яркий желтый */
+            border-color: #FF9F1C;
+        }
+
+        .btn-primary:hover {
+            background-color: #F78D02;  /* Оранжевый с желтым */
+            border-color: #F56C00;
+        }
+
+        .btn-warning {
+            background-color: #FFB740;  /* Светло-оранжевый */
+            border-color: #FFB740;
+        }
+
+        .btn-warning:hover {
+            background-color: #FF9E00;  /* Темно-оранжевый */
+            border-color: #E87B00;
+        }
+
+        .btn-danger {
+            background-color: #FF6F61;  /* Теплый красный */
+            border-color: #FF6F61;
+        }
+
+        .btn-danger:hover {
+            background-color: #E64A3C;  /* Темный красный */
+            border-color: #D13B2E;
+        }
+
+        .btn-lg {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Объявления</h1>
+        <a href="{% url 'add_ad' %}" class="btn btn-lg btn-success">
+            <i class="bi bi-plus-circle"></i> Добавить объявление
+        </a>
+    </div>
+
+    {% if ads %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for ad in ads %}
+            <div class="col">
+                <div class="card shadow-sm border-light h-100">
+                    {% if ad.image %}
+                    <img src="{{ ad.image.url }}" class="card-img-top" alt="Фото">
+                    {% else %}
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Фото">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ad.title }}</h5>
+                        <p class="card-text">{{ ad.description|truncatechars:100 }}</p>
+                        <p class="text-muted"><small>{{ ad.created_at|date:"d.m.Y H:i" }}</small></p>
+                        
+                        <!-- Кнопка для открытия модального окна -->
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adModal{{ ad.id }}">
+                            Подробнее
+                        </button>
+                        
+                        <!-- Показываем кнопки только для администраторов -->
+                        {% if user.is_superuser %}
+                        <a href="{% url 'edit_ad' ad.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                        <a href="{% url 'delete_ad' ad.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для подробной информации -->
+            <div class="modal fade" id="adModal{{ ad.id }}" tabindex="-1" aria-labelledby="adModalLabel{{ ad.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="adModalLabel{{ ad.id }}">{{ ad.title }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Описание:</strong> {{ ad.description }}</p>
+                            <p><strong>Контакты:</strong> {{ ad.contact }}</p>
+                            {% if ad.image %}
+                                <img src="{{ ad.image.url }}" class="img-fluid" alt="Фото">
+                            {% else %}
+                                <img src="https://via.placeholder.com/300" class="img-fluid" alt="Фото">
+                            {% endif %}
+                            <p><strong>Дата добавления:</strong> {{ ad.created_at|date:"d.m.Y H:i" }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Пока нет объявлений. Будь первым, кто его добавит!
+        </div>
+    {% endif %}
+</div>
+
+<!-- Подключение Bootstrap JS и Popper.js для работы модальных окон -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
