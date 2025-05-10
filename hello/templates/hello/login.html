@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #FFB6C1, #FF8C00); /* Теплый градиент */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный фон */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #FF4500; /* Яркий цвет для заголовка */
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #FF6347;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #FF4500; /* Цвет при фокусе */
+        }
+
+        button {
+            padding: 14px;
+            background-color: #FF6347;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #FF4500; /* Темный оттенок при наведении */
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(2px); /* Эффект при нажатии */
+        }
+
+        .register-link {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .register-link a {
+            color: #FF6347;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            color: #FF4500;
+        }
+
+        .error-message {
+            color: #FF0000; /* Красный цвет для сообщений об ошибке */
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Вход</h1>
+        <p>Введите свои данные для входа в аккаунт</p>
+
+        {% if messages %}
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="username">Логин</label>
+            <input type="text" name="username" id="username" placeholder="Введите логин" required>
+
+            <label for="password">Пароль</label>
+            <input type="password" name="password" id="password" placeholder="Введите пароль" required>
+            
+            <button type="submit">Войти</button>
+        </form>
+
+        <p class="register-link">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+    </div>
+
+</body>
+</html>

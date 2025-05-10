@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Список объявлений</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #ff7e5f, #feb47b);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff7e5f;
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+
+        .ad-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px 20px; /* Отступы между ячейками (сначала по вертикали, затем по горизонтали) */
+            margin-bottom: 20px;
+        }
+
+        .ad-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .ad-card img {
+            max-width: 100%;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ad-card h2 {
+            color: #ff7e5f;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .ad-card p {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .ad-card .details {
+            display: none;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .ad-card .details.show {
+            display: block;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #feb47b;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff7e5f;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 10px;
+        }
+
+        .button-link:hover {
+            background-color: #feb47b;
+            transform: translateY(-3px);
+        }
+
+        .button-link:active {
+            transform: translateY(2px);
+        }
+
+        /* Центрирование заголовка */
+        .header {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .button-link-clubs {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #ff7e5f;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        }
+        .button-link-clubs:hover {
+        background-color: #feb47b;
+        transform: translateY(-3px);
+        }
+        .button-link-clubs:active {
+        transform: translateY(2px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>Список всех объявлений</h1>
+        </div>
+
+        {% if ads %}
+            <div class="ad-list">
+                {% for ad in ads %}
+                    <div class="ad-card">
+                        {% if ad.image %}
+                            <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/600x400?text=Нет+изображения" alt="No Image">
+                        {% endif %}
+                        <h2>{{ ad.title }}</h2>
+                        <p><strong>Краткое описание:</strong> {{ ad.short_description }}</p>
+                        <p><strong>Контакты:</strong> {{ ad.contact|default:"Не указаны" }}</p>
+                        <p><strong>Дата добавления:</strong> {{ ad.created_at }}</p>
+
+                        <!-- Кнопка "Подробнее" и скрытая информация -->
+                        <button onclick="toggleDetails('{{ ad.pk }}')">Подробнее</button>
+                        <div class="details" id="details-{{ ad.pk }}">
+                            <p><strong>Полное описание:</strong> {{ ad.description }}</p>
+                            <p><strong>Контакты:</strong> {{ ad.contact }}</p>
+                        </div>
+
+                        <!-- Кнопка "Удалить" для админа -->
+                        {% if user.is_superuser %}
+                            <form method="POST" action="{% url 'ad_delete' ad.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <a href="{% url 'ad_delete' ad.pk %}" class="button-link">Удалить</a>
+                            </form>
+                        {% endif %}
+                        
+                        <!-- Кнопка "Редактировать" для админа -->
+                        {% if user.is_superuser %}
+                            <a href="{% url 'ad_edit' ad.pk %}" class="button-link">Редактировать</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Нет объявлений.</p>
+        {% endif %}
+
+        <!-- Кнопка "Добавить новое объявление" только для суперпользователей -->
+        {% if user.is_superuser %}
+            <div class="back-link">
+                <a href="{% url 'ad_create' %}">Добавить новое объявление</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleDetails(adId) {
+            var details = document.getElementById("details-" + adId);
+            if (details.classList.contains('show')) {
+                details.classList.remove('show');
+            } else {
+                details.classList.add('show');
+            }
+        }
+    </script>
+
+</body>
+</html>

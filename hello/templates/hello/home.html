@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Главная страница</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #FFB6C1, #FF8C00); /* Теплый градиент */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Полупрозрачный фон */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #FF4500; /* Яркий цвет для заголовка */
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button-container a {
+            padding: 12px 24px;
+            background-color: #FF6347;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button-container a:hover {
+            background-color: #FF4500; /* Более темный оттенок */
+            transform: translateY(-3px);
+        }
+
+        .button-container a:active {
+            transform: translateY(2px); /* Эффект при нажатии */
+        }
+
+        .logout-container {
+            margin-top: 20px;
+        }
+
+        .logout-container a {
+            padding: 12px 24px;
+            background-color: #FF4500;
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .logout-container a:hover {
+            background-color: #FF6347;
+            transform: translateY(-3px);
+        }
+
+        .logout-container a:active {
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Добро пожаловать, {{ user.username }}!</h1>
+        <p>Вы успешно вошли в свою учетную запись. Здесь вы можете управлять своими объявлениями и просматривать информацию.</p>
+
+        <div class="button-container">
+            <a href="{% url 'ad_list' %}">Посмотреть объявления</a>
+
+
+            {% if user.is_superuser %}
+                <a href="{% url 'ad_create' %}">Добавить новое объявление</a>
+            {% endif %}
+        </div>
+
+        <div class="logout-container">
+            <a href="{% url 'logout' %}">Выйти</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Добро пожаловать на сайт!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #FFB6C1, #FF8C00); /* Теплый градиент */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #FF4500; /* Яркий цвет для заголовка */
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button-container a {
+            padding: 12px 24px;
+            background-color: #FF6347; /* Кнопки в теплых оттенках */
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button-container a:hover {
+            background-color: #FF4500; /* Более темный оттенок */
+            transform: translateY(-3px);
+        }
+
+        .button-container a:active {
+            transform: translateY(2px); /* Эффект при нажатии */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Добро пожаловать на сайт!</h1>
+        <p>Для начала, пожалуйста, зарегистрируйтесь или войдите в свой аккаунт.</p>
+        
+        <div class="button-container">
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+            <a href="{% url 'login' %}">Войти</a>
+        </div>
+    </div>
+
+</body>
+</html>
