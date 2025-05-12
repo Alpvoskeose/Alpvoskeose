@@ -28,6 +28,7 @@ urlpatterns = [
     path('home/', views.home, name='home'),  # Главная страница
     path('', views.welcome, name='welcome'),  # Приветственная страница
     path('', include('hello.urls')),  # Подключаем URLs из приложения hello
+    path('ad/<int:ad_id>/comment/', views.add_comment, name='comment_add'),  # Новый путь для добавления комментариев
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

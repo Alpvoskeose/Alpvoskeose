@@ -136,7 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'  # Путь, по которому будут доступны медиафайлы
 MEDIA_ROOT = BASE_DIR / 'media'  # Папка, где будут храниться медиафайлы
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Указываем редирект на главную страницу после успешного входа
 LOGIN_REDIRECT_URL = '/home/'  # Перенаправляем на главную страницу после входа
 

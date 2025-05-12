@@ -6,10 +6,41 @@ from django.contrib import messages
 from .models import Ad
 from .forms import AdForm, CustomUserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Ad, Comment
+from .forms import CommentForm
 
+@login_required
+def add_comment(request, ad_id):
+    ad = get_object_or_404(Ad, pk=ad_id)
 
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if content:
+            comment = Comment.objects.create(
+                ad=ad,
+                user=request.user,
+                content=content
+            )
+            return redirect('ad_detail', pk=ad.id)  # Перенаправление на страницу объявления
 
+    return HttpResponse("Ошибка при добавлении комментария", status=400)
+@login_required
+def ad_detail(request, pk):
+    ad = get_object_or_404(Ad, pk=pk)
+    comments = ad.comments.all()  # Получаем все комментарии для этого объявления
 
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.ad = ad
+            comment.user = request.user
+            comment.save()
+            return redirect('ad_detail', pk=ad.pk)
+    else:
+        form = CommentForm()
+
+    return render(request, 'hello/ad_detail.html', {'ad': ad, 'comments': comments, 'form': form})
 # Проверка, является ли пользователь суперпользователем
 def is_superuser(user):
     return user.is_superuser

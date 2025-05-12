@@ -18,4 +18,6 @@ urlpatterns = [
     path('delete/<int:pk>/', views.ad_delete, name='ad_delete'),  # Удаление объявления
     path('list/', views.ad_list, name='ad_list'),  # Страница списка всех объявлений
     path('logout/', views.logout_view, name='logout'),  # Путь для выхода
+    path('ad/<int:pk>/', views.ad_detail, name='ad_detail'),  # Путь для подробной страницы объявления
+    path('ad/<int:ad_id>/comment/', views.add_comment, name='comment_add'),  # Новый путь для добавления комментариев
 ]

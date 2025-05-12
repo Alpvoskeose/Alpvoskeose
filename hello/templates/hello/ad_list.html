@@ -177,6 +177,49 @@
         transform: translateY(2px);
         }
 
+        /* Стиль для комментариев */
+        .comment-section {
+            margin-top: 20px;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .comment-section button {
+            padding: 10px;
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .comment-section button:hover {
+            background-color: #feb47b;
+        }
+
+        .comments {
+            margin-top: 20px;
+        }
+
+        .comments ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comments li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -206,6 +249,33 @@
                         <div class="details" id="details-{{ ad.pk }}">
                             <p><strong>Полное описание:</strong> {{ ad.description }}</p>
                             <p><strong>Контакты:</strong> {{ ad.contact }}</p>
+                        </div>
+
+                        <!-- Форма добавления комментария -->
+                        <div class="comment-section">
+                            <h3>Добавить комментарий</h3>
+                            <form method="POST" action="{% url 'comment_add' ad.pk %}">
+                                {% csrf_token %}
+                                <textarea name="content" rows="4" placeholder="Введите ваш комментарий..." required></textarea>
+                                <button type="submit">Отправить</button>
+                            </form>
+                        </div>
+
+                        <!-- Отображение комментариев -->
+                        <div class="comments">
+                            <h3>Комментарии</h3>
+                            {% if ad.comments.all %}
+                                <ul>
+                                    {% for comment in ad.comments.all %}
+                                        <li>
+                                            <strong>{{ comment.user.username }}:</strong>
+                                            <p>{{ comment.content }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>Нет комментариев.</p>
+                            {% endif %}
                         </div>
 
                         <!-- Кнопка "Удалить" для админа -->

@@ -21,10 +21,10 @@ class Ad(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Пользователь, который оставил комментарий
-    ad = models.ForeignKey('Ad', on_delete=models.CASCADE)  # Объявление, к которому относится комментарий
-    content = models.TextField()  # Текст комментария
-    created_at = models.DateTimeField(auto_now_add=True)  # Дата и время создания комментария
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ad = models.ForeignKey('Ad', on_delete=models.CASCADE, related_name='comments')  # Добавьте related_name
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'Комментарий от {self.user.username} к {self.ad.title}'

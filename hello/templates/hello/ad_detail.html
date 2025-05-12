@@ -1,0 +1,19 @@
+<h1>{{ ad.title }}</h1>
+<p>{{ ad.description }}</p>
+<p><strong>Контакт:</strong> {{ ad.contact }}</p>
+
+<h3>Комментарии</h3>
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}:</strong> {{ comment.content }} ({{ comment.created_at }})</li>
+    {% empty %}
+        <li>Нет комментариев</li>
+    {% endfor %}
+</ul>
+
+<h4>Добавить комментарий</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+</form>
